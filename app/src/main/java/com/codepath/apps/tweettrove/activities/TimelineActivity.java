@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.codepath.apps.tweettrove.R;
@@ -36,6 +38,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 
 public class TimelineActivity extends AppCompatActivity
 implements ComposeTweetFragment.ComposeTweetFragmentListener
@@ -92,6 +97,8 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                 android.R.color.holo_red_light);
 
 
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     }
 
@@ -147,6 +154,24 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
 
         SpacesItemDecoration decoration = new SpacesItemDecoration(20);
         rvTweets.addItemDecoration(decoration);
+        setupRVAnimator();
+
+    }
+
+
+    private void setupRVAnimator() {
+        SlideInBottomAnimationAdapter animator = new SlideInBottomAnimationAdapter(aTweets);
+        animator.setDuration(500);
+        animator.setFirstOnly(false);
+        animator.setInterpolator(new OvershootInterpolator(1f));
+
+        rvTweets.setItemAnimator(new FadeInUpAnimator());
+
+        AlphaInAnimationAdapter alphaAnimator = new AlphaInAnimationAdapter(animator);
+        alphaAnimator.setFirstOnly(false);
+        alphaAnimator.setDuration(500);
+        alphaAnimator.setInterpolator(new AccelerateInterpolator(1f));
+        rvTweets.setAdapter(alphaAnimator);
 
     }
 
