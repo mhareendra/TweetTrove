@@ -15,7 +15,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context="com.codepath.apps.tweettrove.activities.TimelineActivity"
-    android:background="#e5e9fc">
+    android:background="#FF4FA5DB">
 
     <RelativeLayout
         android:layout_width="match_parent"

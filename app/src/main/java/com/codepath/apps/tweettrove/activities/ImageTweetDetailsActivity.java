@@ -73,6 +73,8 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
         binding.iBDetailFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!checkIsOnline())
+                    return;
                 binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
             }
         });
@@ -80,12 +82,32 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
         binding.iBDetailRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!checkIsOnline())
+                    return;
                 binding.iBDetailRetweet.setImageResource(R.drawable.retweet_pressed);
+                String id = String.valueOf(tweet.getUid());
+
+                client.postRetweet(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                        Log.d("onRetweet Success:", response.toString());
+                    }
+                }, id);
+
             }
         });
 
     }
 
+    private boolean checkIsOnline()
+    {
+        if(!isOnline()) {
+            Toast.makeText(this, "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+        return true;
+    }
 
     @Override
     public void onFinishComposeTweetFragmentListener(String statusText) {

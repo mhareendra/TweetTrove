@@ -19,6 +19,7 @@ import com.codepath.apps.tweettrove.adapters.TweetsAdapter;
 import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweettrove.helpers.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweettrove.helpers.ItemClickSupport;
+import com.codepath.apps.tweettrove.helpers.SpacesItemDecoration;
 import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -68,22 +69,12 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
         tweets = new ArrayList<>();
         aTweets = new TweetsAdapter(this, tweets);
         clearTweets();
-        rvTweets.setAdapter(aTweets);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvTweets.setLayoutManager(linearLayoutManager);
-
+        setupRVTweets();
         client = TwitterApplication.getRestClient();
 
         //binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
         //binding.setTimelineActivity(this);
         populateTimeline();
-        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                if(isOnline())
-                    populateTimeline();
-            }
-        });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -99,6 +90,26 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+
+
+    }
+
+
+    private void setupRVTweets()
+    {
+        rvTweets.setAdapter(aTweets);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
+
+
+        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                if(isOnline())
+                    populateTimeline();
+            }
+        });
 
 
         ItemClickSupport.addTo(rvTweets).setOnItemClickListener(
@@ -133,6 +144,9 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                     }
                 }
         );
+
+        SpacesItemDecoration decoration = new SpacesItemDecoration(20);
+        rvTweets.addItemDecoration(decoration);
 
     }
 

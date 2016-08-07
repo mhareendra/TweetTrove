@@ -43,7 +43,12 @@
         </activity>
         <activity android:name=".activities.TimelineActivity" />
         <activity android:name=".activities.TweetDetailsActivity" />
-        <activity android:name=".activities.ImageTweetDetailsActivity"></activity>
+        <activity android:name=".activities.ImageTweetDetailsActivity" />
+        <activity android:name=".activities.SplashActivity"
+            android:theme="@style/SplashTheme"
+            >
+
+        </activity>
     </application>
 
 </manifest>

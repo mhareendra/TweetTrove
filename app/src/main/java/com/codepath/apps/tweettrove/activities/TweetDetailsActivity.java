@@ -58,13 +58,9 @@ public class TweetDetailsActivity extends AppCompatActivity
         binding.iBDetailReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.iBDetailReply.setImageResource(R.drawable.reply_pressed);
-
-                if(!isOnline())
-                {
-                    Toast.makeText(getApplicationContext(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+                if(!checkIsOnline())
                     return;
-                }
+                binding.iBDetailReply.setImageResource(R.drawable.reply_pressed);
                 FragmentManager fm = getSupportFragmentManager();
                 ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(tweet, true);
                 composeTweetFragment.show(fm,"compose_tweet_fragment");
@@ -74,6 +70,8 @@ public class TweetDetailsActivity extends AppCompatActivity
         binding.iBDetailFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!checkIsOnline())
+                    return;
                 binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
             }
         });
@@ -81,7 +79,20 @@ public class TweetDetailsActivity extends AppCompatActivity
         binding.iBDetailRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(!checkIsOnline())
+                    return;
                 binding.iBDetailRetweet.setImageResource(R.drawable.retweet_pressed);
+                String id = String.valueOf(tweet.getUid());
+
+                client.postRetweet(new JsonHttpResponseHandler() {
+                           @Override
+                           public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                               Log.d("onRetweet Success:", response.toString());
+                           }
+                }, id);
+
             }
         });
 
@@ -104,6 +115,15 @@ public class TweetDetailsActivity extends AppCompatActivity
 
         );
 
+    }
+
+    private boolean checkIsOnline()
+    {
+        if(!isOnline()) {
+            Toast.makeText(this, "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+        return true;
     }
 
     public boolean isOnline() {

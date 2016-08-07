@@ -4,12 +4,14 @@ package com.codepath.apps.tweettrove.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.codepath.apps.tweettrove.R;
@@ -42,7 +44,7 @@ public class ComposeTweetFragment extends BottomSheetDialogFragment {
     public EditText etTweet;
 
     @BindView(R.id.btnTweet)
-    public ImageButton btnTweet;
+    public Button btnTweet;
 
     @BindView(R.id.tvInReplyToName)
     public TextView tvInReplyToName;
@@ -70,9 +72,31 @@ public class ComposeTweetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        etTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                int tweetLength = editable.length();
+                if(tweetLength <= 0 || tweetLength > 140)
+                    btnTweet.setEnabled(false);
+                else
+                    btnTweet.setEnabled(true);
+            }
+        });
         if(this.isReplyMode)
         {
             String screenName = tweet.getUser().getScreenName();
+            tvInReply.setText("Replying to ");
             tvInReplyToName.setText(screenName);
             tvInReplyToName.setVisibility(View.VISIBLE);
             tvInReply.setVisibility(View.VISIBLE);
@@ -80,8 +104,9 @@ public class ComposeTweetFragment extends BottomSheetDialogFragment {
         }
         else
         {
+            tvInReply.setText("What do you want to say?");
             tvInReplyToName.setVisibility(View.INVISIBLE);
-            tvInReply.setVisibility(View.INVISIBLE);
+            tvInReply.setVisibility(View.VISIBLE);
         }
         etTweet.requestFocus();
 
