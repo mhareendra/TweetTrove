@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="TimelineActivity"
+            type="com.codepath.apps.tweettrove.activities.TimelineActivity"/>
+        <import type="android.view.View"/>
+    </data>
 <android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,7 +43,8 @@
         android:id="@+id/rvTweets"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -48,5 +57,9 @@
         android:layout_margin="16dp"
         android:layout_gravity="bottom|right"
         app:layout_behavior="com.codepath.apps.tweettrove.helpers.ScrollAwareFABBehavior"
-        android:id="@+id/fabComposeTweet" />
+        android:id="@+id/fabComposeTweet"
+
+
+        />
 </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -1,19 +1,29 @@
 package com.codepath.apps.tweettrove.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by Hari on 8/4/2016.
  */
-public class User {
 
+@Table(name = "User")
+@Parcel(analyze={User.class})
+public class User extends Model {
 
-
-    private String name;
-    private long uid;
-    private String screenName;
-    private String profileImageUrl;
+    @Column(name = "name")
+    public String name;
+    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    public long uid;
+    @Column(name = "screen_name")
+    public String screenName;
+    @Column(name = "profile_image_url")
+    public String profileImageUrl;
 
     public String getName() {
         return name;

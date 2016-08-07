@@ -2,19 +2,29 @@ package com.codepath.apps.tweettrove.models;
 
 import android.text.format.DateUtils;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Hari on 8/4/2016.
  */
-public class Tweet {
+
+@Table(name ="Tweets")
+@Parcel(analyze={Tweet.class, ExtendedEntity.class, User.class, Entity.class})
+public class Tweet extends Model {
 
 
     public String getBody() {
@@ -29,21 +39,46 @@ public class Tweet {
         return createdAt;
     }
 
-    private String body;
-    private long uid;
-    private String createdAt;
+    @Column(name = "body")
+    public String body;
+    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    public long uid;
+    @Column(name = "created_at")
+    public String createdAt;
+
+    @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    public User user;
+
+    public Entity getEntities() {
+        return entities;
+    }
+
+    @Column(name = "Entity", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    public Entity entities = null;
+
+    public ExtendedEntity getExtendedEntities() {
+        return extendedEntities;
+    }
+
+    @Column(name = "ExtendedEntity", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    public ExtendedEntity extendedEntities = null;
+
+    public String relativeTimeStamp;
 
     public String getRelativeTimeStamp() {
+        relativeTimeStamp = this.getRelativeTimeAgo(this.createdAt);
         return relativeTimeStamp;
     }
 
-    private String relativeTimeStamp;
+    public Tweet()
+    {
+
+    }
 
     public User getUser() {
         return user;
     }
 
-    private User user;
 
     public static Tweet fromJSON(JSONObject jsonObject)
     {
@@ -54,14 +89,23 @@ public class Tweet {
 
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt  = jsonObject.getString("created_at");
-            tweet.relativeTimeStamp = tweet.getRelativeTimeAgo(tweet.createdAt);
+            //tweet.relativeTimeStamp = tweet.getRelativeTimeAgo(tweet.createdAt);
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+
+            tweet.entities = Entity.fromJSON(jsonObject.getJSONObject("entities"));
+            tweet.extendedEntities = ExtendedEntity.fromJSON(jsonObject.getJSONObject("extended_entities"));
         }
         catch (JSONException ex)
         {
             ex.printStackTrace();
         }
         return tweet;
+    }
+
+    public static List<Tweet> getAll()
+    {
+        List<Tweet> allItems = new Select().from(Tweet.class).execute();
+        return(allItems);
     }
 
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray)
