@@ -3,24 +3,39 @@ package com.codepath.apps.tweettrove.activities;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
+import com.codepath.apps.tweettrove.TwitterApplication;
+import com.codepath.apps.tweettrove.TwitterClient;
 import com.codepath.apps.tweettrove.databinding.ActivityImageTweetDetailsBinding;
+import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweettrove.helpers.PatternEditableBuilder;
 import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
 import com.codepath.apps.tweettrove.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class ImageTweetDetailsActivity extends AppCompatActivity {
+import cz.msebera.android.httpclient.Header;
+
+public class ImageTweetDetailsActivity extends AppCompatActivity
+        implements ComposeTweetFragment.ComposeTweetFragmentListener
+{
 
     private ActivityImageTweetDetailsBinding binding;
+    private TwitterClient client;
+    private Tweet tweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +43,80 @@ public class ImageTweetDetailsActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_image_tweet_details);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_tweet_details);
-        Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
+        tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         displayTweetDetails(tweet);
         setPatternSpanListeners();
+        setClickListeners();
+        client = TwitterApplication.getRestClient();
+
     }
+
+    private void setClickListeners()
+    {
+
+        binding.iBDetailReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.iBDetailReply.setImageResource(R.drawable.reply_pressed);
+
+                if(!isOnline())
+                {
+                    Toast.makeText(getApplicationContext(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                FragmentManager fm = getSupportFragmentManager();
+                ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(tweet, true);
+                composeTweetFragment.show(fm,"compose_tweet_fragment");
+            }
+        });
+
+        binding.iBDetailFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
+            }
+        });
+
+        binding.iBDetailRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.iBDetailRetweet.setImageResource(R.drawable.retweet_pressed);
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onFinishComposeTweetFragmentListener(String statusText) {
+
+        if (statusText.isEmpty())
+            return;
+
+        client.postStatusReply(new JsonHttpResponseHandler() {
+                                   @Override
+                                   public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                                       Log.d("onSuccess Compose:", response.toString());
+                                   }
+
+                               }, statusText, String.valueOf(tweet.getUid())
+
+        );
+
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
+    }
+
 
     private void displayTweetDetails(Tweet tweet)
     {

@@ -2,14 +2,15 @@ package com.codepath.apps.tweettrove.fragments;
 
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.codepath.apps.tweettrove.R;
 import com.codepath.apps.tweettrove.models.Tweet;
@@ -20,7 +21,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 @SuppressLint("NewApi")
-public class ComposeTweetFragment extends DialogFragment {
+public class ComposeTweetFragment extends BottomSheetDialogFragment {
 
 
     public ComposeTweetFragment() {
@@ -28,10 +29,12 @@ public class ComposeTweetFragment extends DialogFragment {
     }
 
     Tweet tweet;
-    public static ComposeTweetFragment newInstance()
+    boolean isReplyMode = false;
+    public static ComposeTweetFragment newInstance(Tweet tweet, boolean isReplyMode)
     {
         ComposeTweetFragment frag = new ComposeTweetFragment();
-//        frag.tweet = tweet;
+        frag.tweet = tweet;
+        frag.isReplyMode = isReplyMode;
         return frag;
     }
 
@@ -39,7 +42,13 @@ public class ComposeTweetFragment extends DialogFragment {
     public EditText etTweet;
 
     @BindView(R.id.btnTweet)
-    public Button btnTweet;
+    public ImageButton btnTweet;
+
+    @BindView(R.id.tvInReplyToName)
+    public TextView tvInReplyToName;
+
+    @BindView(R.id.tvInReply)
+    public TextView tvInReply;
 
     private Unbinder unbinder;
 
@@ -61,7 +70,21 @@ public class ComposeTweetFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if(this.isReplyMode)
+        {
+            String screenName = tweet.getUser().getScreenName();
+            tvInReplyToName.setText(screenName);
+            tvInReplyToName.setVisibility(View.VISIBLE);
+            tvInReply.setVisibility(View.VISIBLE);
+            etTweet.setText(screenName + " ");
+        }
+        else
+        {
+            tvInReplyToName.setVisibility(View.INVISIBLE);
+            tvInReply.setVisibility(View.INVISIBLE);
+        }
         etTweet.requestFocus();
+
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 

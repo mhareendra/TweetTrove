@@ -146,7 +146,7 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
             return;
         }
         FragmentManager fm = getSupportFragmentManager();
-        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance();
+        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(null, false);
         composeTweetFragment.show(fm,"compose_tweet_fragment");
     }
 

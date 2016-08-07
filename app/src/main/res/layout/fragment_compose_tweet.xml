@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.codepath.apps.tweettrove.fragments.ComposeTweetFragment">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:counterEnabled="true"
         app:counterMaxLength="140"
         app:counterOverflowTextAppearance="@style/MyOverflowText"
-        android:layout_above="@+id/btnTweet"
-        android:layout_marginBottom="14dp"
-        android:layout_marginTop="14dp">
+        android:layout_below="@+id/btnTweet"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="14dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,13 +30,50 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tweet"
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/btnTweet"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/inputLayout"
+        android:layout_alignEnd="@+id/inputLayout"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="0dp"
+        android:src="@drawable/twitter_icon1"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/inputLayout"
+        android:layout_toLeftOf="@+id/btnTweet"
+        android:layout_toStartOf="@+id/btnTweet"
+        android:layout_alignTop="@+id/btnTweet"
+        android:layout_marginLeft="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Replying to "
+            android:id="@+id/tvInReply"
+            android:layout_alignTop="@+id/btnTweet"
+            android:layout_alignLeft="@+id/inputLayout"
+            android:layout_alignStart="@+id/inputLayout"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="\@screenName"
+            android:id="@+id/tvInReplyToName"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+
+    </LinearLayout>
 </RelativeLayout>

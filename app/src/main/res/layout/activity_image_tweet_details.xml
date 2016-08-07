@@ -4,7 +4,8 @@ xmlns:tools="http://schemas.android.com/tools">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.tweettrove.activities.ImageTweetDetailsActivity">
+    tools:context="com.codepath.apps.tweettrove.activities.ImageTweetDetailsActivity"
+    android:background="#dddddd">
 
     <ImageView
         android:layout_width="60dp"
@@ -78,16 +79,59 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_height="wrap_content"
         android:id="@+id/ivDetailTweetImage"
         android:adjustViewBounds="true"
-        android:src="#001374"
+        android:src="@drawable/twitter_placeholder"
         android:layout_below="@+id/tvDetailTweetText"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp" />
+        android:layout_marginRight="14dp"
+        android:layout_above="@+id/linearLayout"
+        android:layout_marginBottom="7dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#dddddd"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/ivDetailProfileImage"
+        android:layout_toEndOf="@+id/ivDetailProfileImage"
+        android:id="@+id/linearLayout"
+        android:layout_marginBottom="14dp">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailReply"
+            android:layout_gravity="left|center"
+            android:layout_margin="14dp"
+            android:src="@drawable/reply"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailRetweet"
+            android:layout_gravity="center"
+            android:layout_margin="14dp"
+            android:src="@drawable/retweet"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailFavorite"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/favorite"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp" />
+    </LinearLayout>
 
 </RelativeLayout>
 </layout>

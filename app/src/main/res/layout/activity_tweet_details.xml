@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TweetDetailsActivity">
+    tools:context=".TweetDetailsActivity"
+    android:background="#dddddd">
 
     <ImageView
         android:layout_width="60dp"
@@ -56,8 +58,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="14dp"
         android:layout_below="@+id/tvDetailCreatedAt"
         android:autoLink="all"
         android:linksClickable="true"
@@ -74,6 +74,52 @@
         android:layout_alignStart="@+id/tvDetailTweetText"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="14dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/tvDetailTweetText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="#dddddd">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailReply"
+            android:layout_gravity="left|center"
+            android:layout_margin="14dp"
+            android:src="@drawable/reply"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailRetweet"
+            android:layout_gravity="center"
+            android:layout_margin="14dp"
+            android:src="@drawable/retweet"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iBDetailFavorite"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/favorite"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp" />
+    </LinearLayout>
 
 </RelativeLayout>
 </layout>

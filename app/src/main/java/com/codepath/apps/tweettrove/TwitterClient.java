@@ -66,6 +66,21 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
     }
 
+
+	///https://api.twitter.com/1.1/statuses/update.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk
+
+	public void postStatusReply(AsyncHttpResponseHandler handler, String statusText, String id)
+	{
+		String apiUrl = getApiUrl("statuses/update.json");
+
+		RequestParams params = new RequestParams();
+		params.put("status", statusText);
+		params.put("in_reply_to_status_id", id);
+		getClient().post(apiUrl, params, handler);
+	}
+
+
+
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
