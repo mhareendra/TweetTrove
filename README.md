@@ -67,6 +67,10 @@ video contains remaining user stories:
 
 https://vimeo.com/177973475
 
+Video with offline mode user story:
+
+https://vimeo.com/177975244
+
 
 ## License
 
