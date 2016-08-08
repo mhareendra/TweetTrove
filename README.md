@@ -55,8 +55,10 @@ I tried three different ways to get the embedded video to play but wasn't able t
 
 Here's a walkthrough of implemented user stories:
 
+<img src='https://github.com/mhareendra/TweetTrove/blob/master/TT1.gif' width=' '/>
 
 
+https://vimeo.com/177973475
 
 
 ## License
