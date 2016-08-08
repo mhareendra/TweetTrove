@@ -63,7 +63,7 @@ gif with OAuth authentication:
 
 ## Video:
 
-video contains remaining user stories with internet connection
+video contains remaining user stories:
 
 https://vimeo.com/177973475
 
