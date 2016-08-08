@@ -55,8 +55,15 @@ I tried three different ways to get the embedded video to play but wasn't able t
 
 Here's a walkthrough of implemented user stories:
 
+
+gif with OAuth authentication:
+
 <img src='https://github.com/mhareendra/TweetTrove/blob/master/TT1.gif' width=' '/>
 
+
+## Video:
+
+video contains remaining user stories with internet connection
 
 https://vimeo.com/177973475
 
