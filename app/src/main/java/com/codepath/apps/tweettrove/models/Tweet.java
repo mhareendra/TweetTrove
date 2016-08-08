@@ -46,6 +46,20 @@ public class Tweet extends Model {
     @Column(name = "created_at")
     public String createdAt;
 
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    @Column(name = "favorited")
+    public boolean favorited;
+
+    @Column(name ="retweeted")
+    public boolean retweeted;
+
     @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     public User user;
 
@@ -89,6 +103,9 @@ public class Tweet extends Model {
 
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt  = jsonObject.getString("created_at");
+
+            tweet.favorited = jsonObject.getBoolean("favorited");
+            tweet.retweeted = jsonObject.getBoolean("retweeted");
             //tweet.relativeTimeStamp = tweet.getRelativeTimeAgo(tweet.createdAt);
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 

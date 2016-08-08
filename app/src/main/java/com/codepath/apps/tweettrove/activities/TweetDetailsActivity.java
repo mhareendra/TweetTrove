@@ -19,6 +19,7 @@ import com.codepath.apps.tweettrove.helpers.PatternEditableBuilder;
 import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
 import com.codepath.apps.tweettrove.models.User;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -73,6 +74,19 @@ public class TweetDetailsActivity extends AppCompatActivity
                 if(!checkIsOnline())
                     return;
                 binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
+
+                String id = String.valueOf(tweet.getUid());
+                client.postFavoriteCreate(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Log.d("onFavorite Success:", String.valueOf(statusCode));
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("OnFavorite failure", String.valueOf(statusCode));
+                    }
+                }, id);
             }
         });
 
@@ -92,10 +106,8 @@ public class TweetDetailsActivity extends AppCompatActivity
                                Log.d("onRetweet Success:", response.toString());
                            }
                 }, id);
-
             }
         });
-
     }
 
     @Override
@@ -153,6 +165,25 @@ public class TweetDetailsActivity extends AppCompatActivity
             String createdAt = tweet.getCreatedAt();
             String createdAtToDisplay = formatCreatedTime(createdAt);
             binding.tvDetailCreatedAt.setText(createdAtToDisplay);
+
+
+            if(tweet.isFavorited())
+            {
+                binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
+            }
+            else
+            {
+                binding.iBDetailFavorite.setImageResource(R.drawable.favorite);
+            }
+
+            if(tweet.isRetweeted())
+            {
+                binding.iBDetailRetweet.setImageResource(R.drawable.retweet_pressed);
+            }
+            else
+            {
+                binding.iBDetailRetweet.setImageResource(R.drawable.retweet);
+            }
 
             Media media = tweet.getEntities().getMedia().get(0);
 

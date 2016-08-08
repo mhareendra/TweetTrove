@@ -157,6 +157,25 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
             String createdAtToDisplay = formatCreatedTime(createdAt);
             binding.tvDetailCreatedAt.setText(createdAtToDisplay);
 
+
+            if(tweet.isFavorited())
+            {
+                binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
+            }
+            else
+            {
+                binding.iBDetailFavorite.setImageResource(R.drawable.favorite);
+            }
+
+            if(tweet.isRetweeted())
+            {
+                binding.iBDetailRetweet.setImageResource(R.drawable.retweet_pressed);
+            }
+            else
+            {
+                binding.iBDetailRetweet.setImageResource(R.drawable.retweet);
+            }
+
             Media media = tweet.getEntities().getMedia().get(0);
 
             if(media == null)

@@ -48,7 +48,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/twitter_compose"
         app:fabSize="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,6 +60,7 @@
         android:id="@+id/fabComposeTweet"
 
 
+        style="@style/fabBackground"
         />
 </android.support.design.widget.CoordinatorLayout>
 </layout>

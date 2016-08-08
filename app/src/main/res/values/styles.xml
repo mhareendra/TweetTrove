@@ -17,6 +17,9 @@
         <item name="android:textColor">@android:color/holo_red_dark</item>
     </style>
 
+    <style name="fabBackground" parent ="AppBaseTheme">
+        <item name = "android:background">#FF4FA5DB</item>
+        </style>
 
     <!-- Define your custom dialog theme here extending from base -->
     <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">

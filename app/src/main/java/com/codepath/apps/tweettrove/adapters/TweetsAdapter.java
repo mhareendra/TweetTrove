@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,6 +111,24 @@ public class TweetsAdapter extends
                 holder.tvScreenName.setText(tweet.getUser().getScreenName());
                 holder.tvBody.setText(tweet.getBody());
 
+                if(tweet.isFavorited())
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite_pressed);
+                }
+                else
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite);
+                }
+
+                if(tweet.isRetweeted())
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet_pressed);
+                }
+                else
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet);
+                }
+
                 // Style clickable spans based on pattern
                 new PatternEditableBuilder().
                         addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
@@ -177,6 +196,24 @@ public class TweetsAdapter extends
                 holder.tvUserName.setText(tweet.getUser().getName());
                 holder.tvScreenName.setText(tweet.getUser().getScreenName());
                 holder.tvBody.setText(tweet.getBody());
+
+                if(tweet.isFavorited())
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite_pressed);
+                }
+                else
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite);
+                }
+
+                if(tweet.isRetweeted())
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet_pressed);
+                }
+                else
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet);
+                }
 
                 // Style clickable spans based on pattern
                 new PatternEditableBuilder().
@@ -263,6 +300,24 @@ public class TweetsAdapter extends
                 holder.tvUserName.setText(tweet.getUser().getName());
                 holder.tvScreenName.setText(tweet.getUser().getScreenName());
                 holder.tvBody.setText(tweet.getBody());
+
+                if(tweet.isFavorited())
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite_pressed);
+                }
+                else
+                {
+                    holder.ibFavorite.setImageResource(R.drawable.favorite);
+                }
+
+                if(tweet.isRetweeted())
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet_pressed);
+                }
+                else
+                {
+                    holder.ibRetweet.setImageResource(R.drawable.retweet);
+                }
 
                 // Style clickable spans based on pattern
                 new PatternEditableBuilder().
@@ -370,6 +425,13 @@ public class TweetsAdapter extends
         @BindView(R.id.tvTimestamp)
         public TextView tvTimestamp;
 
+        @BindView(R.id.iBDetailFavorite)
+        public ImageButton ibFavorite;
+
+        @BindView(R.id.iBDetailRetweet)
+        public ImageButton ibRetweet;
+
+
         public ViewHolderTweet(View view)
         {
             super(view);
@@ -397,6 +459,14 @@ public class TweetsAdapter extends
         @BindView(R.id.ivTweetImage)
         public ImageView ivTweetImage;
 
+        @BindView(R.id.iBDetailFavorite)
+        public ImageButton ibFavorite;
+
+        @BindView(R.id.iBDetailRetweet)
+        public ImageButton ibRetweet;
+
+
+
         public ViewHolderTweetImage(View view)
         {
             super(view);
@@ -423,6 +493,14 @@ public class TweetsAdapter extends
 
         @BindView(R.id.vVTweetVideo)
         public ScalableVideoView vVTweetVideo;
+
+        @BindView(R.id.iBDetailFavorite)
+        public ImageButton ibFavorite;
+
+        @BindView(R.id.iBDetailRetweet)
+        public ImageButton ibRetweet;
+
+
 
         public ViewHolderTweetVideo(View view)
         {
