@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetDetailsActivity extends AppCompatActivity
         implements ComposeTweetFragment.ComposeTweetFragmentListener
@@ -55,6 +56,13 @@ public class TweetDetailsActivity extends AppCompatActivity
         setPatternSpanListeners();
         setClickListeners();
         client = TwitterApplication.getRestClient();
+
+
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.twitter_launcher);
+        }
 
     }
 
@@ -173,6 +181,7 @@ public class TweetDetailsActivity extends AppCompatActivity
                 binding.tvDetailScreenName.setText(user.getScreenName());
                 Glide.with(this)
                         .load(tweet.getUser().getProfileImageUrl())
+                        .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
                         .into(binding.ivDetailProfileImage);
             }
             binding.tvDetailTweetText.setText(tweet.getBody());

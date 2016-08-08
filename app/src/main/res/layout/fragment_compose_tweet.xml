@@ -31,7 +31,8 @@
         android:background="@android:color/transparent"
         android:layout_marginBottom="5dp"
 
-        android:textSize="13dp" />
+        android:textSize="13dp"
+        android:textColor="#FFFFFF" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +61,8 @@
             android:visibility="invisible"
             android:textAlignment="center"
             android:layout_gravity="center"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +73,8 @@
             android:layout_gravity="center"
             android:visibility="invisible"
             android:textAlignment="center"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textColor="#FFFFFF" />
 
 
     </LinearLayout>
@@ -87,5 +90,5 @@
         android:background="#FFFFFF"
         android:layout_margin="14dp"
         android:fadingEdge="horizontal"
-        />
+        android:textColor="#FF4FA5DB" />
 </RelativeLayout>

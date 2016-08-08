@@ -97,8 +97,11 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                 android.R.color.holo_red_light);
 
 
-        if(getSupportActionBar()!=null)
+        if(getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.twitter_launcher);
+        }
 
     }
 
@@ -135,7 +138,6 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                                 Intent imageTweetIntent = new Intent(TimelineActivity.this, ImageTweetDetailsActivity.class);
                                 imageTweetIntent.putExtra("tweet", Parcels.wrap(tweet));
                                 imageTweetIntent.putExtra("position", position);
-//                                startActivity(imageTweetIntent);
 
                                 startActivityForResult(imageTweetIntent, 0);
 

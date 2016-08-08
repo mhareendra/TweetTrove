@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
 /**
@@ -162,6 +163,8 @@ public class TweetsAdapter extends
 
                 Glide.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
+                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
+                        .placeholder(R.drawable.twitter_placeholder)
                         .into(holder.ivProfileImage);
 
                 ArrayList<Media> media = tweet.getEntities().getMedia();
@@ -249,6 +252,7 @@ public class TweetsAdapter extends
 
                 Glide.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
+                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
                         .into(holder.ivProfileImage);
 
 
@@ -379,6 +383,7 @@ public class TweetsAdapter extends
 
                 Glide.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
+                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 5))
                         .into(holder.ivProfileImage);
             }
             catch (Exception ex)

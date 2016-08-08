@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ImageTweetDetailsActivity extends AppCompatActivity
         implements ComposeTweetFragment.ComposeTweetFragmentListener
@@ -56,6 +57,13 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
         setPatternSpanListeners();
         setClickListeners();
         client = TwitterApplication.getRestClient();
+
+
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.twitter_launcher);
+        }
 
     }
 
@@ -180,6 +188,7 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
                 binding.tvDetailScreenName.setText(user.getScreenName());
                 Glide.with(this)
                         .load(tweet.getUser().getProfileImageUrl())
+                        .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
                         .into(binding.ivDetailProfileImage);
             }
             binding.tvDetailTweetText.setText(tweet.getBody());
@@ -212,6 +221,8 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
                 return;
             Glide.with(this)
                     .load(media.getMediaUrlHttps())
+                    .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
+                    .placeholder(R.drawable.twitter_placeholder)
                     .into(binding.ivDetailTweetImage);
         }
         catch (Exception ex)

@@ -69,5 +69,6 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 
     compile 'com.malmstein:fenster:0.0.2'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
 
 }
