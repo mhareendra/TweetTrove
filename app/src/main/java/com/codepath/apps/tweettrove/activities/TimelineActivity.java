@@ -15,15 +15,15 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.codepath.apps.tweettrove.R;
-import com.codepath.apps.tweettrove.TwitterApplication;
-import com.codepath.apps.tweettrove.TwitterClient;
 import com.codepath.apps.tweettrove.adapters.TweetsAdapter;
 import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweettrove.helpers.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweettrove.helpers.ItemClickSupport;
 import com.codepath.apps.tweettrove.helpers.SpacesItemDecoration;
+import com.codepath.apps.tweettrove.helpers.TwitterApplication;
 import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
+import com.codepath.apps.tweettrove.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.victor.loading.rotate.RotateLoading;
 
@@ -134,14 +134,19 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
                             if (media != null && media.getMediaUrlHttps() != null && !media.getMediaUrlHttps().isEmpty()) {
                                 Intent imageTweetIntent = new Intent(TimelineActivity.this, ImageTweetDetailsActivity.class);
                                 imageTweetIntent.putExtra("tweet", Parcels.wrap(tweet));
-                                startActivity(imageTweetIntent);
+                                imageTweetIntent.putExtra("position", position);
+//                                startActivity(imageTweetIntent);
+
+                                startActivityForResult(imageTweetIntent, 0);
 
                             }
                             else {
 
                                 Intent intent = new Intent(TimelineActivity.this, TweetDetailsActivity.class);
                                 intent.putExtra("tweet", Parcels.wrap(tweet));
-                                startActivity(intent);
+                                intent.putExtra("position", position);
+//                                startActivity(intent);
+                                startActivityForResult(intent, 0);
                             }
                         }
                         catch (Exception ex)
@@ -326,5 +331,24 @@ implements ComposeTweetFragment.ComposeTweetFragmentListener
         aTweets.clear();
         populateTimeline();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == 0 && requestCode == 0) {
+
+            boolean isRT  =  data.getBooleanExtra("isRetweeted", false);
+            boolean isFav = data.getBooleanExtra("isFavorited", false);
+
+            if(isFav || isRT)
+            {
+                aTweets.clear();
+                populateTimeline();
+            }
+
+
+
+        }
     }
 }

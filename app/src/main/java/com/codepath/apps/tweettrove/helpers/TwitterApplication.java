@@ -1,6 +1,8 @@
-package com.codepath.apps.tweettrove;
+package com.codepath.apps.tweettrove.helpers;
 
 import android.content.Context;
+
+import com.codepath.apps.tweettrove.network.TwitterClient;
 
 /*
  * This is the Android application itself and is used to configure various settings

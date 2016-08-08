@@ -68,4 +68,6 @@ dependencies {
     compile 'com.yqritc:android-scalablevideoview:1.0.4'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 
+    compile 'com.malmstein:fenster:0.0.2'
+
 }

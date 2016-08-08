@@ -1,16 +1,21 @@
 package com.codepath.apps.tweettrove.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
@@ -20,7 +25,8 @@ import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
 import com.codepath.apps.tweettrove.models.Variant;
 import com.codepath.apps.tweettrove.models.VideoInfo;
-import com.yqritc.scalablevideoview.ScalableVideoView;
+import com.malmstein.fenster.controller.MediaFensterPlayerController;
+import com.malmstein.fenster.view.FensterVideoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +189,8 @@ public class TweetsAdapter extends
         }
     }
 
-    private void configureTweetVideoViewHolder(ViewHolderTweetVideo holder, int position)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void configureTweetVideoViewHolder(final ViewHolderTweetVideo holder, int position)
     {
         try
         {
@@ -271,9 +278,35 @@ public class TweetsAdapter extends
                 if(mediaUrl == null || mediaUrl.isEmpty())
                     return;
 
+////http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4
+//                holder.textureView.setVideo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFensterPlayerController.DEFAULT_VIDEO_START);
+////                holder.textureView.start();
+//
+//                holder.textureView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        holder.textureView.start();
+//                    }
+//                });
+//
+//                holder.playerController.setVisibilityListener(new FensterPlayerControllerVisibilityListener() {
+//                    @Override
+//                    public void onControlsVisibilityChange(boolean value) {
+//                        //setSystemUiVisibility(value, holder.playerController);
+//                    }
+//                });;
 
-                holder.vVTweetVideo.setDataSource(getContext(), Uri.parse(mediaUrl));
-                holder.vVTweetVideo.start();
+                holder.vvTweetVideo.setVideoURI(Uri.parse(mediaUrl));
+                MediaController mediaController = new MediaController(getContext());
+                mediaController.setAnchorView(holder.vvTweetVideo);
+                holder.vvTweetVideo.setMediaController(mediaController);
+                holder.vvTweetVideo.requestFocus();
+                holder.vvTweetVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    // Close the progress bar and play the video
+                    public void onPrepared(MediaPlayer mp) {
+                        holder.vvTweetVideo.start();
+                    }
+                });
 
             }
             catch (Exception ex)
@@ -367,17 +400,6 @@ public class TweetsAdapter extends
         try {
             Tweet tweet = mTweets.get(position);
 
-            ArrayList<Media>  media = tweet.getEntities().getMedia();
-            if (media != null) {
-                if (media.get(0).getType().equals("photo")) {
-
-                    if(media.get(0).getMediaUrlHttps() != null && !media.get(0).getMediaUrlHttps().isEmpty())
-                        return TWEET_IMAGE;
-                }
-                else
-                    return TWEET;
-            }
-
             ExtendedEntity extendedEntity = tweet.getExtendedEntities();
             if(extendedEntity != null)
             {
@@ -395,6 +417,19 @@ public class TweetsAdapter extends
                     }
                 }
             }
+            ArrayList<Media>  media = tweet.getEntities().getMedia();
+
+            if (media != null) {
+                if (media.get(0).getType().equals("photo")) {
+
+                    if(media.get(0).getMediaUrlHttps() != null && !media.get(0).getMediaUrlHttps().isEmpty())
+                        return TWEET_IMAGE;
+                }
+                else
+                    return TWEET;
+            }
+
+
         }
         catch (Exception ex)
         {
@@ -491,8 +526,8 @@ public class TweetsAdapter extends
         @BindView(R.id.tvTimestamp)
         public TextView tvTimestamp;
 
-        @BindView(R.id.vVTweetVideo)
-        public ScalableVideoView vVTweetVideo;
+        //@BindView(R.id.vVTweetVideo)
+        //public ScalableVideoView vVTweetVideo;
 
         @BindView(R.id.iBDetailFavorite)
         public ImageButton ibFavorite;
@@ -500,12 +535,29 @@ public class TweetsAdapter extends
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
 
+//        @BindView(R.id.play_video_texture)
+        public FensterVideoView textureView;
 
+//        @BindView(R.id.play_video_controller)
+        public MediaFensterPlayerController playerController;
+
+        @BindView(R.id.vVTweetVideo)
+        public VideoView vvTweetVideo;
 
         public ViewHolderTweetVideo(View view)
         {
             super(view);
             ButterKnife.bind(this, view);
+
+//            textureView = (FensterVideoView) view.findViewById(R.id.play_video_texture);
+//            playerController = (MediaFensterPlayerController) view.findViewById(R.id.play_video_controller);
+//            textureView.setMediaController(playerController);
+//
+//            textureView.setVideo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFensterPlayerController.DEFAULT_VIDEO_START);
+////                holder.textureView.start();
+
+
+
 
         }
     }

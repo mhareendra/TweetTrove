@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp">
+        android:layout_marginBottom="14dp"
+        android:paddingRight="14dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -47,8 +48,6 @@
             android:text="Body"
             android:id="@+id/tvBody"
             android:layout_below="@+id/tvUserName"
-            android:layout_alignLeft="@+id/tvUserName"
-            android:layout_alignStart="@+id/tvUserName"
             android:layout_marginTop="3dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -57,7 +56,9 @@
             android:autoLink="all"
             android:linksClickable="true"
 
-            android:layout_marginRight="14dp" />
+            android:layout_marginRight="0dp"
+            android:layout_alignLeft="@+id/tvUserName"
+            android:layout_alignStart="@+id/tvUserName" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,13 +88,36 @@
             android:textSize="12dp"
             />
 
+        <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--xmlns:tools="http://schemas.android.com/tools"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/cardview_dark_background"-->
+            <!--tools:context=".DemoActivity">-->
 
-        <com.yqritc.scalablevideoview.ScalableVideoView
-            android:id="@+id/vVTweetVideo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="100dp"
-            app:scalableType="fitCenter"/>
+            <!--<com.malmstein.fenster.view.FensterVideoView-->
+                <!--android:id="@+id/play_video_texture"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:keepScreenOn="true"-->
+                <!--android:fitsSystemWindows="true" />-->
+
+            <!--<com.malmstein.fenster.controller.MediaFensterPlayerController-->
+                <!--android:id="@+id/play_video_controller"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:animateLayoutChanges="true"-->
+                <!--android:fitsSystemWindows="true" />-->
+
+        <!--</FrameLayout>-->
+
+        <!--<com.yqritc.scalablevideoview.ScalableVideoView-->
+            <!--android:id="@+id/vVTweetVideo"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="100dp"-->
+            <!--app:scalableType="fitCenter"/>-->
 
 
         <LinearLayout
@@ -131,16 +155,16 @@
                 android:background="#ffffff" />
         </LinearLayout>
 
-        <!--<VideoView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/vVTweetVideo"-->
-            <!--android:layout_below="@+id/ivProfileImage"-->
-            <!--android:layout_alignLeft="@+id/tvBody"-->
-            <!--android:layout_alignStart="@+id/tvBody"-->
-            <!--android:layout_marginRight="14dp"-->
-            <!--android:layout_marginBottom="14dp"-->
-            <!--android:layout_marginTop="14dp" />-->
+        <VideoView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/vVTweetVideo"
+            android:layout_below="@+id/ivProfileImage"
+            android:layout_alignLeft="@+id/tvBody"
+            android:layout_alignStart="@+id/tvBody"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="14dp"
+            android:layout_above="@+id/linearLayout" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

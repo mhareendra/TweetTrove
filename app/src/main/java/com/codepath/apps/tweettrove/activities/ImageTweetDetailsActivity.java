@@ -1,5 +1,6 @@
 package com.codepath.apps.tweettrove.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,14 +12,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
-import com.codepath.apps.tweettrove.TwitterApplication;
-import com.codepath.apps.tweettrove.TwitterClient;
 import com.codepath.apps.tweettrove.databinding.ActivityImageTweetDetailsBinding;
 import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweettrove.helpers.PatternEditableBuilder;
+import com.codepath.apps.tweettrove.helpers.TwitterApplication;
 import com.codepath.apps.tweettrove.models.Media;
 import com.codepath.apps.tweettrove.models.Tweet;
 import com.codepath.apps.tweettrove.models.User;
+import com.codepath.apps.tweettrove.network.TwitterClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -37,6 +39,11 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
     private TwitterClient client;
     private Tweet tweet;
 
+    private int tweetPosition;
+
+    private boolean isRetweeted =false;
+    private boolean isFavorited = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,7 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_tweet_details);
         tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
+        tweetPosition = getIntent().getIntExtra("position", -1);
         displayTweetDetails(tweet);
         setPatternSpanListeners();
         setClickListeners();
@@ -73,9 +81,30 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
         binding.iBDetailFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!checkIsOnline())
-                    return;
+
                 binding.iBDetailFavorite.setImageResource(R.drawable.favorite_pressed);
+
+                if(!checkIsOnline()) {
+                    binding.iBDetailFavorite.setImageResource(R.drawable.favorite);
+
+                    return;
+                }
+                String id = String.valueOf(tweet.getUid());
+                client.postFavoriteCreate(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        isFavorited = true;
+                        Log.d("onFavorite Success:", String.valueOf(statusCode));
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("OnFavorite failure", String.valueOf(statusCode));
+                        binding.iBDetailFavorite.setImageResource(R.drawable.favorite);
+
+                    }
+                }, id);
+
             }
         });
 
@@ -91,6 +120,7 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
+                        isRetweeted = true;
                         Log.d("onRetweet Success:", response.toString());
                     }
                 }, id);
@@ -239,6 +269,19 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+
+        Intent data = new Intent();
+        // Pass relevant data back as a result
+        data.putExtra("isFavorited", isFavorited);
+        data.putExtra("isRetweeted", isRetweeted);
+        // Activity finished ok, return the data
+        setResult(0, data); // set result code and bundle data for response
+        finish(); // cl
     }
 
 

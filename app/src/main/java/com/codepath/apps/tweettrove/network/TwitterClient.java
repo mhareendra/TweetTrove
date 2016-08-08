@@ -1,4 +1,4 @@
-package com.codepath.apps.tweettrove;
+package com.codepath.apps.tweettrove.network;
 
 import android.content.Context;
 
