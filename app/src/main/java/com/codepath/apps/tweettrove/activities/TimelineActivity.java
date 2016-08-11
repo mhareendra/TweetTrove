@@ -1,38 +1,25 @@
 package com.codepath.apps.tweettrove.activities;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.request.target.ViewTarget;
 import com.codepath.apps.tweettrove.R;
 import com.codepath.apps.tweettrove.adapters.FragmentTimelinePagerAdapter;
-import com.codepath.apps.tweettrove.fragments.TimelineFragment;
-import com.victor.loading.rotate.RotateLoading;
+import com.codepath.apps.tweettrove.adapters.TweetsAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity
-
+implements TweetsAdapter.ProfileImageClickListener
 {
-//    @BindView(R.id.rvTweets)
-    public RecyclerView rvTweets;
-
-//    @BindView(R.id.fabComposeTweet)
-    public FloatingActionButton fabComposeTweet;
-
-//    @BindView(R.id.swipeContainer)
-    public SwipeRefreshLayout swipeContainer;
-
-//    @BindView(R.id.rotateLoading)
-    public RotateLoading rotateLoading;
 
     @BindView(R.id.viewpager)
     public ViewPager viewPager;
@@ -40,21 +27,11 @@ public class TimelineActivity extends AppCompatActivity
     @BindView(R.id.sliding_tabs)
     public TabLayout tabLayout;
 
-
-
-//    @BindView(R.id.fragment_timeline)
-    TimelineFragment timelineFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
-//
-//        if(savedInstanceState == null) {
-//            timelineFragment = (TimelineFragment) getSupportFragmentManager()
-//                    .findFragmentById(R.id.fragment_timeline);
-//        }
 
         viewPager.setAdapter(new FragmentTimelinePagerAdapter(getSupportFragmentManager(),
                 TimelineActivity.this));
@@ -80,19 +57,41 @@ public class TimelineActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         int id = item.getItemId();
 
         if(id == R.id.action_profile)
         {
-            startProfileActivity();
+            startProfileActivity("haritestprofile");
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void startProfileActivity()
+    private void startProfileActivity(String screenName)
     {
         Intent intent = new Intent(TimelineActivity.this,ProfileActivity.class );
+        intent.putExtra("screenName", screenName);
         startActivity(intent);
+    }
+
+    @Override
+    public void onProfileImageClick(String screenName) {
+        try
+        {
+            if(screenName != null && !screenName.isEmpty())
+            {
+                startProfileActivity(screenName);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public class App extends Application {
+        @Override public void onCreate() {
+            super.onCreate();
+            ViewTarget.setTagId(R.id.glide_tag);
+        }
     }
 }

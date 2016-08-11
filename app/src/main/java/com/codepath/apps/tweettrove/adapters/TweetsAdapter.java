@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
@@ -180,6 +181,16 @@ public class TweetsAdapter extends
                         .load(mediaUrl)
                         .into(holder.ivTweetImage);
 
+                //Set profile image click listener
+                try {
+                    holder.listener = (ProfileImageClickListener) getContext();
+                    holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
             }
             catch (Exception ex)
             {
@@ -255,6 +266,17 @@ public class TweetsAdapter extends
                         .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
                         .into(holder.ivProfileImage);
 
+
+
+                //Set profile image click listener
+                try {
+                    holder.listener = (ProfileImageClickListener) getContext();
+                    holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
 
                 if(tweet.getExtendedEntities().getMedia() == null)
                     return;
@@ -385,6 +407,18 @@ public class TweetsAdapter extends
                         .load(tweet.getUser().getProfileImageUrl())
                         .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 5))
                         .into(holder.ivProfileImage);
+
+
+                //Set profile image click listener
+                try {
+                    holder.listener = (ProfileImageClickListener) getContext();
+                    holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
             }
             catch (Exception ex)
             {
@@ -448,6 +482,11 @@ public class TweetsAdapter extends
         return mTweets.size();
     }
 
+    public interface ProfileImageClickListener
+    {
+        void onProfileImageClick(String screenName);
+    }
+
     public static class ViewHolderTweet extends RecyclerView.ViewHolder
     {
         @BindView(R.id.ivProfileImage)
@@ -471,12 +510,21 @@ public class TweetsAdapter extends
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
 
+        public ProfileImageClickListener listener;
+
+        @OnClick(R.id.ivProfileImage)
+        public void profileImageClick()
+        {
+            listener.onProfileImageClick(ivProfileImage.getTag().toString());
+        }
 
         public ViewHolderTweet(View view)
         {
             super(view);
             ButterKnife.bind(this, view);
         }
+
+
     }
 
     public static class ViewHolderTweetImage extends RecyclerView.ViewHolder
@@ -505,7 +553,13 @@ public class TweetsAdapter extends
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
 
+        public ProfileImageClickListener listener;
 
+        @OnClick(R.id.ivProfileImage)
+        public void profileImageClick()
+        {
+            listener.onProfileImageClick(ivProfileImage.getTag().toString());
+        }
 
         public ViewHolderTweetImage(View view)
         {
@@ -548,6 +602,14 @@ public class TweetsAdapter extends
 
         @BindView(R.id.vVTweetVideo)
         public VideoView vvTweetVideo;
+
+        public ProfileImageClickListener listener;
+
+        @OnClick(R.id.ivProfileImage)
+        public void profileImageClick()
+        {
+            listener.onProfileImageClick(ivProfileImage.getTag().toString());
+        }
 
         public ViewHolderTweetVideo(View view)
         {

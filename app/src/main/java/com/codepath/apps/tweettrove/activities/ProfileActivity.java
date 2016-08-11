@@ -1,68 +1,66 @@
 package com.codepath.apps.tweettrove.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.codepath.apps.tweettrove.R;
+import com.codepath.apps.tweettrove.adapters.TweetsAdapter;
+import com.codepath.apps.tweettrove.fragments.ProfileHeaderFragment;
 import com.codepath.apps.tweettrove.fragments.UserTimelineFragment;
-import com.codepath.apps.tweettrove.helpers.TwitterApplication;
-import com.codepath.apps.tweettrove.models.User;
 import com.codepath.apps.tweettrove.network.TwitterClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONObject;
+import butterknife.ButterKnife;
 
-import cz.msebera.android.httpclient.Header;
-
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements TweetsAdapter.ProfileImageClickListener{
 
     TwitterClient client;
-    User user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        setUserInfo();
+        ButterKnife.bind(this);
+
         String screenName = getIntent().getStringExtra("screenName");
 
         if(savedInstanceState == null) {
-            UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(screenName);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+            ProfileHeaderFragment fragmentProfileHeader = ProfileHeaderFragment.newInstance(screenName);
+            ft.replace(R.id.flProfileHeader, fragmentProfileHeader);
+
+            UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(screenName);
             ft.replace(R.id.flContainer, fragmentUserTimeline);
+
             ft.commit();
         }
     }
 
-    private void setUserInfo()
-    {
-        client = TwitterApplication.getRestClient();
-
-
-        client.getUserInfo(new JsonHttpResponseHandler()
+    @Override
+    public void onProfileImageClick(String screenName) {
+        try
         {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-                user = User.fromJSON(response);
-
-                if(user != null) {
-                    if(getSupportActionBar()!=null) {
-                        getSupportActionBar().setTitle(user.getScreenName());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ProfileActivity.this, "GetUserInfo error!", Toast.LENGTH_SHORT).show();
-
-                Log.e("UserInfo error", responseString);
+            if(screenName != null && !screenName.isEmpty())
+            {
+                startProfileActivity(screenName);
             }
         }
-        );
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
     }
+
+    private void startProfileActivity(String screenName)
+    {
+        Intent intent = new Intent(this, ProfileActivity.class );
+        intent.putExtra("screenName", screenName);
+        startActivity(intent);
+    }
+
 }

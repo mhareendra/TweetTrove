@@ -80,6 +80,20 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, null, handler);
     }
 
+	public void getUserLookup(AsyncHttpResponseHandler handler, String screenName)
+    {
+        String apiUrl = getApiUrl("users/lookup.json");
+        RequestParams params  = new RequestParams();
+        if(screenName.charAt(0) == '@')
+        {
+            screenName = screenName.replace("@","");
+        }
+        params.put("screen_name", screenName);
+
+        getClient().get(apiUrl, params, handler);
+
+
+    }
 
 	///https://api.twitter.com/1.1/statuses/update.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk
 
