@@ -48,14 +48,40 @@ public class TwitterClient extends OAuthBaseClient {
 
 
         RequestParams params = new RequestParams();
-        params.put("count", 50);
+        params.put("count", 25);
         params.put("since_id", 1);
 
         getClient().get(apiUrl, params, handler);
     }
 
 
-    ///https://api.twitter.com/1.1/statuses/update.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk
+	public void getMentionsTimeline(AsyncHttpResponseHandler handler)
+	{
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+
+		getClient().get(apiUrl, params, handler);
+	}
+
+    public void getUserTimeline(AsyncHttpResponseHandler handler, String screenName)
+    {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("screen_name", screenName);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserInfo(AsyncHttpResponseHandler handler)
+    {
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        getClient().get(apiUrl, null, handler);
+    }
+
+
+	///https://api.twitter.com/1.1/statuses/update.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk
 
     public void postStatus(AsyncHttpResponseHandler handler, String statusText)
     {

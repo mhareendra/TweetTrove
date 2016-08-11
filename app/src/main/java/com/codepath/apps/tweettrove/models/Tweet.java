@@ -15,7 +15,6 @@ import org.parceler.Parcel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -123,7 +122,7 @@ public class Tweet extends Model {
     public static List<Tweet> getAll()
     {
         List<Tweet> allItems = new Select().from(Tweet.class).execute();
-        Collections.reverse(allItems);
+//        Collections.reverse(allItems);
         return(allItems);
     }
 
