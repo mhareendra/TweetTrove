@@ -12,4 +12,14 @@
         android:id="@+id/action_profile"
         />
 
+    <item
+        android:title="messages"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_send"
+        android:orderInCategory="200"
+        android:titleCondensed="Messages"
+        android:id="@+id/action_messages"
+
+        />
+
 </menu>

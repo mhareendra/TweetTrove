@@ -110,7 +110,11 @@ public class Tweet extends Model {
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 
             tweet.entities = Entity.fromJSON(jsonObject.getJSONObject("entities"));
-            tweet.extendedEntities = ExtendedEntity.fromJSON(jsonObject.getJSONObject("extended_entities"));
+            if(jsonObject.toString().contains("extended_entities")) {
+                JSONObject extendedEntitiesObject = jsonObject.getJSONObject("extended_entities");
+                if (extendedEntitiesObject != null)
+                    tweet.extendedEntities = ExtendedEntity.fromJSON(extendedEntitiesObject);
+            }
         }
         catch (JSONException ex)
         {

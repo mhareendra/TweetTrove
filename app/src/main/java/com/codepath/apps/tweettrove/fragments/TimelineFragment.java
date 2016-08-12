@@ -42,7 +42,7 @@ import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 /**
  * Created by Hari on 8/8/2016.
  */
-public class TimelineFragment extends Fragment
+public abstract class TimelineFragment extends Fragment
         implements ComposeTweetFragment.ComposeTweetFragmentListener
 {
 
@@ -62,6 +62,7 @@ public class TimelineFragment extends Fragment
     @BindView(R.id.rotateLoading)
     public RotateLoading rotateLoading;
 
+    public LinearLayoutManager layoutManager;
 
     public boolean isDeviceOnline = true;
 
@@ -77,7 +78,7 @@ public class TimelineFragment extends Fragment
 
     }
 
-    private void clearTweets()
+    public void clearTweets()
     {
         aTweets.clear();
         deleteTweetsFromDB();
@@ -86,15 +87,15 @@ public class TimelineFragment extends Fragment
     private void setupRVTweets()
     {
         rvTweets.setAdapter(aTweets);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvTweets.setLayoutManager(linearLayoutManager);
+        layoutManager = new LinearLayoutManager(getContext());
+        rvTweets.setLayoutManager(layoutManager);
 
 
-        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-//                if(isOnline())
-//                    populateTimeline();
+                if(isOnline())
+                    populateTimeline(getLowestId());
             }
         });
 
@@ -229,7 +230,7 @@ public class TimelineFragment extends Fragment
 
                 if(isOnline())
                     clearTweets();
-//                populateTimeline();
+                populateTimeline(getLowestId());
             }
         });
 
@@ -265,7 +266,7 @@ public class TimelineFragment extends Fragment
             return;
         }
         FragmentManager fm = getFragmentManager(); //getSupportFragmentManager();
-        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(null, false);
+        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(this, null, false);
         composeTweetFragment.show(fm,"compose_tweet_fragment");
     }
 
@@ -275,21 +276,11 @@ public class TimelineFragment extends Fragment
 
         if (statusText.isEmpty())
             return;
-//
-//        client.postStatus(new JsonHttpResponseHandler() {
-//                              @Override
-//                              public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//
-//                                  Log.d("onSuccess Compose:", response.toString());
-//                              }
-//
-//                          }, statusText
-//
-//        );
-        aTweets.clear();
-//        populateTimeline();
+
+        finishComposeTweet(statusText);
 
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -302,12 +293,20 @@ public class TimelineFragment extends Fragment
             if(isFav || isRT)
             {
                 aTweets.clear();
-//                populateTimeline();
+                    populateTimeline(getLowestId());
             }
-
-
 
         }
     }
+
+    public long getLowestId()
+    {
+        long currentMinId = tweets.get(tweets.size() - 1).getUid();
+        return currentMinId;
+    }
+
+    protected abstract void populateTimeline(long maxId);
+
+    protected abstract void finishComposeTweet(String statusText);
 
 }

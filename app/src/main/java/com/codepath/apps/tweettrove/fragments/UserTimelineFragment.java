@@ -37,10 +37,13 @@ public class UserTimelineFragment extends TimelineFragment{
 
         screenName = getArguments().getString("screenName");
         client = TwitterApplication.getRestClient();
-        populateTimeline();
+        populateTimeline(currentMaxId );
     }
 
-    private void populateTimeline()
+    private long currentMaxId = -1;
+
+    @Override
+    protected void populateTimeline(long maxId)
     {
 
         if(!isOnline())
@@ -48,15 +51,15 @@ public class UserTimelineFragment extends TimelineFragment{
             isDeviceOnline = false;
             Toast.makeText(getActivity(), "Could not connect to the Internet, displaying offline tweets", Toast.LENGTH_SHORT).show();
             displayDBData();
-//            swipeContainer.setRefreshing(false);
+            swipeContainer.setRefreshing(false);
             return;
         }
         else
         {
             isDeviceOnline =true;
         }
-
-//        rotateLoading.start();
+        if(rotateLoading != null)
+            rotateLoading.start();
         client.getUserTimeline(new JsonHttpResponseHandler()
         {
 
@@ -65,21 +68,24 @@ public class UserTimelineFragment extends TimelineFragment{
                 Log.d("Timeline success: ", response.toString());
                 try {
 
-//                    if(rotateLoading.isStart())
-//                        rotateLoading.stop();
+
+                    if(rotateLoading != null &&rotateLoading.isStart())
+                        rotateLoading.stop();
 //                    int curSize = aTweets.getItemCount();
 //                    tweets.addAll(Tweet.fromJSONArray(response));
 //                    aTweets.notifyItemRangeInserted(curSize, aTweets.getItemCount());
                     addAll(Tweet.fromJSONArray(response));
-//                    swipeContainer.setRefreshing(false);
+                    swipeContainer.setRefreshing(false);
                     saveTweetsToDB();
+
+                    currentMaxId = getLowestId();
                 }
                 catch (Exception ex)
                 {
                     ex.printStackTrace();
 
-//                    if(rotateLoading.isStart())
-//                        rotateLoading.stop();
+                    if(rotateLoading!=null && rotateLoading.isStart())
+                        rotateLoading.stop();
 
 
                 }
@@ -88,22 +94,35 @@ public class UserTimelineFragment extends TimelineFragment{
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
-//                if(rotateLoading.isStart())
-//                    rotateLoading.stop();
-
+                if(rotateLoading!= null && rotateLoading.isStart())
+                    rotateLoading.stop();
                 Toast.makeText(getActivity(), "There was an error when attempting to connect to Twitter", Toast.LENGTH_SHORT).show();
                 if(errorResponse!=null)
                     Log.e("Timeline error: ", errorResponse.toString());
-//                swipeContainer.setRefreshing(false);
+                swipeContainer.setRefreshing(false);
                 displayDBData();
             }
 
-        }, screenName);
+        }, screenName, maxId);
 
     }
 
+    @Override
+    protected void finishComposeTweet(String statusText) {
+        client.postStatus(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
+                Log.d("onSuccess Compose:(arr)", response.toString());
+            }
 
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                Log.d("onSuccess Compose:(obj)", response.toString());
+            }
+        }, statusText );
+    }
 
 
 }

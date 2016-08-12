@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
-
         android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -48,8 +47,9 @@
         <activity android:name=".activities.ImageTweetDetailsActivity" />
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/SplashTheme"></activity>
-        <activity android:name=".activities.ProfileActivity"></activity>
+            android:theme="@style/SplashTheme" />
+        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.MessagesActivity"></activity>
     </application>
 
 </manifest>

@@ -120,19 +120,70 @@
             <!--app:scalableType="fitCenter"/>-->
 
 
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/linearLayout"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginBottom="14dp"-->
+            <!--android:layout_marginTop="14dp">-->
+
+            <!--<ImageButton-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:id="@+id/iBDetailRetweet"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/retweet"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--android:layout_marginTop="14dp"-->
+                <!--android:layout_marginBottom="14dp"-->
+                <!--android:layout_marginLeft="28dp"-->
+                <!--android:layout_marginRight="28dp"-->
+                <!--android:background="#ffffff" />-->
+
+            <!--<ImageButton-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:id="@+id/iBDetailFavorite"-->
+                <!--android:src="@drawable/favorite"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="14dp"-->
+                <!--android:background="#ffffff" />-->
+        <!--</LinearLayout>-->
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginTop="14dp">
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="14dp">
+
+
 
             <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/iBDetailReply"
+                android:layout_gravity="left|center"
+                android:src="@drawable/reply"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="14dp"
+                android:background="#ffffff" />
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/iBDetailRetweet"
                 android:layout_gravity="center"
                 android:src="@drawable/retweet"
@@ -145,8 +196,8 @@
                 android:background="#ffffff" />
 
             <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/iBDetailFavorite"
                 android:src="@drawable/favorite"
                 android:adjustViewBounds="true"

@@ -46,7 +46,7 @@ public class PatternEditableBuilder {
     ArrayList<SpannablePatternItem> patterns;
 
     /* This stores a particular pattern item
-       complete with pattern, span styles, and click listener */
+       complete with pattern, span styles, and click profileImageClickListener */
     public class SpannablePatternItem {
         public SpannablePatternItem(Pattern pattern, SpannableStyleListener styles, SpannableClickedListener listener) {
             this.pattern = pattern;
@@ -59,7 +59,7 @@ public class PatternEditableBuilder {
         public SpannableClickedListener listener;
     }
 
-    /* This stores the style listener for a pattern item
+    /* This stores the style profileImageClickListener for a pattern item
        Used to style a particular category of spans */
     public static abstract class SpannableStyleListener {
         public int spanTextColor;
@@ -74,7 +74,7 @@ public class PatternEditableBuilder {
         abstract void onSpanStyled(TextPaint ds);
     }
 
-    /* This stores the click listener for a pattern item
+    /* This stores the click profileImageClickListener for a pattern item
        Used to handle clicks to a particular category of spans */
     public interface SpannableClickedListener {
         void onSpanClicked(String text);
@@ -82,7 +82,7 @@ public class PatternEditableBuilder {
 
     /* This is the custom clickable span class used
        to handle user clicks to our pattern spans
-       applying the styles and invoking click listener.
+       applying the styles and invoking click profileImageClickListener.
      */
     public class StyledClickableSpan extends ClickableSpan {
         SpannablePatternItem item;

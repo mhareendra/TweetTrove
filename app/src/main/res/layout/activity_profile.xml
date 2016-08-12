@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.codepath.apps.tweettrove.activities.ProfileActivity">
+    tools:context="com.codepath.apps.tweettrove.activities.ProfileActivity"
+    android:background="#FF4FA5DB">
 
     <FrameLayout
         android:layout_width = "match_parent"
@@ -25,5 +26,5 @@
         android:layout_alignParentStart="true"
         android:id="@+id/flContainer"
         android:layout_below="@+id/flProfileHeader"
-        android:layout_marginTop="7dp" />
+         />
 </RelativeLayout>

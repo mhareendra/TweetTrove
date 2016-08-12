@@ -41,8 +41,10 @@ public class Entity extends Model {
         Entity e = new Entity();
         try
         {
-            e.media = Media.fromJSONArray(jsonObject.getJSONArray("media"));
-
+            if(jsonObject.toString().contains("media")) {
+                if (jsonObject.getJSONArray("media") != null)
+                    e.media = Media.fromJSONArray(jsonObject.getJSONArray("media"));
+            }
         }
         catch (JSONException ex)
         {

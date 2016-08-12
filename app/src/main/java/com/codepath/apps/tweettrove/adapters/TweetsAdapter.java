@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
+import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweettrove.helpers.PatternEditableBuilder;
 import com.codepath.apps.tweettrove.models.ExtendedEntity;
 import com.codepath.apps.tweettrove.models.Media;
@@ -27,6 +29,7 @@ import com.codepath.apps.tweettrove.models.Variant;
 import com.codepath.apps.tweettrove.models.VideoInfo;
 import com.malmstein.fenster.controller.MediaFensterPlayerController;
 import com.malmstein.fenster.view.FensterVideoView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 /**
@@ -105,11 +108,11 @@ public class TweetsAdapter extends
 
     }
 
-    private void configureTweetImageViewHolder(ViewHolderTweetImage holder, int position)
+    private void configureTweetImageViewHolder(final ViewHolderTweetImage holder, int position)
     {
         try
         {
-            Tweet tweet = mTweets.get(position);
+            final Tweet tweet = mTweets.get(position);
 
             if(tweet == null)
                 return;
@@ -162,11 +165,12 @@ public class TweetsAdapter extends
 
                 holder.tvTimestamp.setText(tweet.getRelativeTimeStamp());
 
-                Glide.with(getContext())
+
+                Picasso.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
-                        .placeholder(R.drawable.twitter_placeholder)
+                        .transform(new RoundedCornersTransformation(5,5))
                         .into(holder.ivProfileImage);
+
 
                 ArrayList<Media> media = tweet.getEntities().getMedia();
 
@@ -177,19 +181,39 @@ public class TweetsAdapter extends
                 if(mediaUrl == null || mediaUrl.isEmpty())
                     return;
 
-                Glide.with(getContext())
+
+                Picasso.with(getContext())
                         .load(mediaUrl)
+                        .transform(new RoundedCornersTransformation(10, 10))
                         .into(holder.ivTweetImage);
 
-                //Set profile image click listener
+
+                //Set profile image click profileImageClickListener
                 try {
-                    holder.listener = (ProfileImageClickListener) getContext();
+                    holder.profileImageClickListener = (ProfileImageClickListener) getContext();
                     holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
                 }
                 catch (Exception ex)
                 {
                     ex.printStackTrace();
                 }
+
+                try
+                {
+                    holder.ibReply.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            holder.ibReply.setImageResource(R.drawable.reply_pressed);
+                            startComposeReply(tweet);
+                        }
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
 
             }
             catch (Exception ex)
@@ -208,7 +232,7 @@ public class TweetsAdapter extends
     {
         try
         {
-            Tweet tweet = mTweets.get(position);
+            final Tweet tweet = mTweets.get(position);
 
             if(tweet == null)
                 return;
@@ -260,15 +284,19 @@ public class TweetsAdapter extends
 
 
                 holder.tvTimestamp.setText(tweet.getRelativeTimeStamp());
+//
+//                Glide.with(getContext())
+//                        .load(tweet.getUser().getProfileImageUrl())
+//                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
+//                        .into(holder.ivProfileImage);
 
-                Glide.with(getContext())
+                Picasso.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
+                        .transform(new RoundedCornersTransformation(5,5))
                         .into(holder.ivProfileImage);
 
 
-
-                //Set profile image click listener
+                //Set profile image click profileImageClickListener
                 try {
                     holder.listener = (ProfileImageClickListener) getContext();
                     holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
@@ -277,6 +305,23 @@ public class TweetsAdapter extends
                 {
                     ex.printStackTrace();
                 }
+
+                try
+                {
+                    holder.ibReply.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            holder.ibReply.setImageResource(R.drawable.reply_pressed);
+                            startComposeReply(tweet);
+                        }
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
 
                 if(tweet.getExtendedEntities().getMedia() == null)
                     return;
@@ -346,11 +391,11 @@ public class TweetsAdapter extends
         }
     }
 
-    private void configureTweetViewHolder(ViewHolderTweet holder, int position)
+    private void configureTweetViewHolder(final ViewHolderTweet holder, int position)
     {
         try
         {
-            Tweet tweet = mTweets.get(position);
+            final Tweet tweet = mTweets.get(position);
 
             if(tweet == null)
                 return;
@@ -378,6 +423,7 @@ public class TweetsAdapter extends
                     holder.ibRetweet.setImageResource(R.drawable.retweet);
                 }
 
+
                 // Style clickable spans based on pattern
                 new PatternEditableBuilder().
                         addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
@@ -403,13 +449,19 @@ public class TweetsAdapter extends
 
                 holder.tvTimestamp.setText(tweet.getRelativeTimeStamp());
 
-                Glide.with(getContext())
+//                Glide.with(getContext())
+//                        .load(tweet.getUser().getProfileImageUrl())
+//                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 5))
+//                        .into(holder.ivProfileImage);
+
+                Picasso.with(getContext())
                         .load(tweet.getUser().getProfileImageUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 5))
+                        .transform(new RoundedCornersTransformation(5,5))
                         .into(holder.ivProfileImage);
 
 
-                //Set profile image click listener
+
+                //Set profile image click profileImageClickListener
                 try {
                     holder.listener = (ProfileImageClickListener) getContext();
                     holder.ivProfileImage.setTag(tweet.getUser().getScreenName());
@@ -418,6 +470,22 @@ public class TweetsAdapter extends
                 {
                     ex.printStackTrace();
                 }
+
+                try
+                {
+                    holder.ibReply.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            holder.ibReply.setImageResource(R.drawable.reply_pressed);
+                            startComposeReply(tweet);
+                        }
+                    });
+
+                }
+                 catch (Exception ex)
+                 {
+                    ex.printStackTrace();
+                 }
 
             }
             catch (Exception ex)
@@ -429,6 +497,13 @@ public class TweetsAdapter extends
         {
             ex.printStackTrace();
         }
+    }
+
+    private void startComposeReply(Tweet tweet)
+    {
+        FragmentManager fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
+        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(null, tweet, true);
+        composeTweetFragment.show(fm,"compose_tweet_fragment");
     }
 
     private final int TWEET = 0, TWEET_IMAGE = 1, TWEET_VIDEO = 2;
@@ -456,9 +531,11 @@ public class TweetsAdapter extends
                     }
                 }
             }
-            ArrayList<Media>  media = tweet.getEntities().getMedia();
+            ArrayList<Media> media = new ArrayList<>();
+            if(tweet.getEntities()!=null)
+                media = tweet.getEntities().getMedia();
 
-            if (media != null) {
+            if (media != null && media.size() >= 1) {
                 if (media.get(0).getType().equals("photo")) {
 
                     if(media.get(0).getMediaUrlHttps() != null && !media.get(0).getMediaUrlHttps().isEmpty())
@@ -510,6 +587,9 @@ public class TweetsAdapter extends
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
 
+        @BindView(R.id.iBDetailReply)
+        public ImageButton ibReply;
+
         public ProfileImageClickListener listener;
 
         @OnClick(R.id.ivProfileImage)
@@ -553,12 +633,15 @@ public class TweetsAdapter extends
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
 
-        public ProfileImageClickListener listener;
+        @BindView(R.id.iBDetailReply)
+        public ImageButton ibReply;
+
+        public ProfileImageClickListener profileImageClickListener;
 
         @OnClick(R.id.ivProfileImage)
         public void profileImageClick()
         {
-            listener.onProfileImageClick(ivProfileImage.getTag().toString());
+            profileImageClickListener.onProfileImageClick(ivProfileImage.getTag().toString());
         }
 
         public ViewHolderTweetImage(View view)
@@ -593,6 +676,9 @@ public class TweetsAdapter extends
 
         @BindView(R.id.iBDetailRetweet)
         public ImageButton ibRetweet;
+
+        @BindView(R.id.iBDetailReply)
+        public ImageButton ibReply;
 
 //        @BindView(R.id.play_video_texture)
         public FensterVideoView textureView;
@@ -632,7 +718,7 @@ public class TweetsAdapter extends
     private List<Tweet> mTweets;
     private Context mContext;
 
-    public TweetsAdapter(Context context,List<Tweet> tweets)
+    public TweetsAdapter(Context context, List<Tweet> tweets)
     {
         mTweets = tweets;
         mContext = context;

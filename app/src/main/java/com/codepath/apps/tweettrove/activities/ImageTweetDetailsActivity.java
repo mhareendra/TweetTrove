@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
 import com.codepath.apps.tweettrove.databinding.ActivityImageTweetDetailsBinding;
 import com.codepath.apps.tweettrove.fragments.ComposeTweetFragment;
@@ -22,6 +21,7 @@ import com.codepath.apps.tweettrove.models.User;
 import com.codepath.apps.tweettrove.network.TwitterClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.parceler.Parcels;
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class ImageTweetDetailsActivity extends AppCompatActivity
         implements ComposeTweetFragment.ComposeTweetFragmentListener
@@ -81,7 +81,7 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
                     return;
                 }
                 FragmentManager fm = getSupportFragmentManager();
-                ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(tweet, true);
+                ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance(null , tweet, true);
                 composeTweetFragment.show(fm,"compose_tweet_fragment");
             }
         });
@@ -186,10 +186,16 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
             if(user != null) {
                 binding.tvDetailUsername.setText(user.getName());
                 binding.tvDetailScreenName.setText(user.getScreenName());
-                Glide.with(this)
+//                Glide.with(this)
+//                        .load(tweet.getUser().getProfileImageUrl())
+//                        .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
+//                        .into(binding.ivDetailProfileImage);
+
+                Picasso.with(this)
                         .load(tweet.getUser().getProfileImageUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
+                        .transform(new RoundedCornersTransformation(5,5))
                         .into(binding.ivDetailProfileImage);
+
             }
             binding.tvDetailTweetText.setText(tweet.getBody());
             String createdAt = tweet.getCreatedAt();
@@ -219,11 +225,18 @@ public class ImageTweetDetailsActivity extends AppCompatActivity
 
             if(media == null)
                 return;
-            Glide.with(this)
+//            Glide.with(this)
+//                    .load(media.getMediaUrlHttps())
+//                    .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
+//                    .placeholder(R.drawable.twitter_placeholder)
+//                    .into(binding.ivDetailTweetImage);
+
+            Picasso.with(this)
                     .load(media.getMediaUrlHttps())
-                    .bitmapTransform(new RoundedCornersTransformation(this, 5, 5))
+                    .transform(new RoundedCornersTransformation(5,5))
                     .placeholder(R.drawable.twitter_placeholder)
                     .into(binding.ivDetailTweetImage);
+
         }
         catch (Exception ex)
         {

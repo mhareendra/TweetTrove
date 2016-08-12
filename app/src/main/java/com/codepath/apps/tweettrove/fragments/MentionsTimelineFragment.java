@@ -37,6 +37,25 @@ public class MentionsTimelineFragment extends TimelineFragment{
         populateTimeline();
     }
 
+    @Override
+    protected void populateTimeline(long maxId) {
+
+    }
+
+    @Override
+    protected void finishComposeTweet(String statusText) {
+        client.postStatus(new JsonHttpResponseHandler() {
+                              @Override
+                              public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                                  Log.d("onSuccess Compose:", response.toString());
+                              }
+
+                          }, statusText
+
+        );
+    }
+
     private void populateTimeline()
     {
 

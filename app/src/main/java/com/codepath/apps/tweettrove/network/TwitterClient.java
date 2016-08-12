@@ -42,14 +42,18 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getHomeTimeline(AsyncHttpResponseHandler handler)
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, long maxId)
     {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
 
 
         RequestParams params = new RequestParams();
         params.put("count", 25);
-        params.put("since_id", 1);
+        if(maxId == -1)
+            params.put("since_id", 1);
+        else
+            params.put("max_id", maxId);
+
 
         getClient().get(apiUrl, params, handler);
     }
@@ -65,12 +69,18 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
-    public void getUserTimeline(AsyncHttpResponseHandler handler, String screenName)
+    public void getUserTimeline(AsyncHttpResponseHandler handler, String screenName, long maxId)
     {
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         RequestParams params = new RequestParams();
         params.put("count", 25);
         params.put("screen_name", screenName);
+
+        if(maxId > -1)
+        {
+            params.put("max_id", maxId);
+        }
+
         getClient().get(apiUrl, params, handler);
     }
 
@@ -136,6 +146,16 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().post(apiUrl, params, handler);
 	}
 
+
+    public void getDirectMessages(AsyncHttpResponseHandler handler, long maxId)
+    {
+        String apiUrl = getApiUrl("direct_messages.json");
+
+        RequestParams params = new RequestParams();
+        params.put("since_id", 1);
+
+        getClient().get(apiUrl, params, handler);
+    }
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)

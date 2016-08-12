@@ -112,8 +112,12 @@ public class Media extends Model {
             media.mediaUrl = jsonObject.getString("media_url");
             media.mediaUrlHttps = jsonObject.getString("media_url_https");
             media.type = jsonObject.getString("type");
-            media.videoInfo = VideoInfo.fromJson(jsonObject.getJSONObject("video_info"));
+            if(jsonObject.toString().contains("video_info")) {
+                JSONObject videoInfo = jsonObject.getJSONObject("video_info");
 
+                if (videoInfo != null)
+                    media.videoInfo = VideoInfo.fromJson(videoInfo);
+            }
         }
         catch (JSONException ex)
         {

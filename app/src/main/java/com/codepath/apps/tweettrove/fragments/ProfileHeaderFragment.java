@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.codepath.apps.tweettrove.R;
 import com.codepath.apps.tweettrove.helpers.TwitterApplication;
 import com.codepath.apps.tweettrove.models.User;
 import com.codepath.apps.tweettrove.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cz.msebera.android.httpclient.Header;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Hari on 8/11/2016.
@@ -144,21 +144,35 @@ public class ProfileHeaderFragment extends Fragment
             String profileImageUrl = user.getProfileImageUrl();
 
             if(backgroundImageUrl!= null && !backgroundImageUrl.isEmpty()) {
-                Glide.with(this)
+//                Glide.with(this)
+//                        .load(backgroundImageUrl)
+//                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 3, 3))
+//                        .placeholder(R.drawable.twitter_placeholder)
+//                        .into(ivBackgroundImage);
+
+                Picasso.with(getActivity())
                         .load(backgroundImageUrl)
-                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 3, 3))
+                        .transform(new RoundedCornersTransformation(5,5))
                         .placeholder(R.drawable.twitter_placeholder)
                         .into(ivBackgroundImage);
+
 
             }
 
             if(profileImageUrl != null && !profileImageUrl.isEmpty())
             {
-                Glide.with(this)
+//                Glide.with(this)
+//                        .load(profileImageUrl)
+//                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
+//                        .placeholder(R.drawable.twitter_placeholder)
+//                        .into(ivProfileImage);
+
+                Picasso.with(getActivity())
                         .load(profileImageUrl)
-                        .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 5))
+                        .transform(new RoundedCornersTransformation(5,5))
                         .placeholder(R.drawable.twitter_placeholder)
                         .into(ivProfileImage);
+
             }
         }
         catch (Exception ex)

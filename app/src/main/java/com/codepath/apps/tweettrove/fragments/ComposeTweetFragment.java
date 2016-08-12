@@ -4,6 +4,7 @@ package com.codepath.apps.tweettrove.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -32,13 +33,16 @@ public class ComposeTweetFragment extends BottomSheetDialogFragment {
 
     Tweet tweet;
     boolean isReplyMode = false;
-    public static ComposeTweetFragment newInstance(Tweet tweet, boolean isReplyMode)
+    public static ComposeTweetFragment newInstance(Fragment fragment, Tweet tweet, boolean isReplyMode)
     {
         ComposeTweetFragment frag = new ComposeTweetFragment();
         frag.tweet = tweet;
         frag.isReplyMode = isReplyMode;
+        frag.fragment = fragment;
         return frag;
     }
+
+    private Fragment fragment;
 
     @BindView(R.id.etTweet)
     public EditText etTweet;
@@ -119,7 +123,11 @@ public class ComposeTweetFragment extends BottomSheetDialogFragment {
     public void finishComposeTweet()
     {
 
-        ComposeTweetFragmentListener listener = (ComposeTweetFragmentListener) getActivity();
+        ComposeTweetFragmentListener listener;
+        if(fragment == null)
+            listener = (ComposeTweetFragmentListener) getActivity();
+        else
+            listener = (ComposeTweetFragmentListener) fragment;
         String statusText = etTweet.getText().toString();
         listener.onFinishComposeTweetFragmentListener(statusText);
         dismiss();
