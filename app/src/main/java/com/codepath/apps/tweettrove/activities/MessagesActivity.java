@@ -6,13 +6,19 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.codepath.apps.tweettrove.R;
+import com.codepath.apps.tweettrove.adapters.MessagesAdapter;
 import com.codepath.apps.tweettrove.helpers.TwitterApplication;
+import com.codepath.apps.tweettrove.models.Message;
 import com.codepath.apps.tweettrove.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class MessagesActivity extends AppCompatActivity {
@@ -22,14 +28,21 @@ public class MessagesActivity extends AppCompatActivity {
 
     TwitterClient client;
 
+    ArrayList<Message> messages;
+
+    MessagesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
+        ButterKnife.bind(this);
         client = TwitterApplication.getRestClient();
 
+        messages = new ArrayList<>();
+        adapter = new MessagesAdapter(this, messages );
+        lvMessages.setAdapter(adapter);
         getDirectMessages();
     }
 
@@ -40,10 +53,13 @@ public class MessagesActivity extends AppCompatActivity {
         client.getDirectMessages(new JsonHttpResponseHandler()
         {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
+                ArrayList<Message> messageList = Message.fromJSonArray(response);
 
+                messages.addAll(messageList);
                 Log.d("onsuccess getmessages:", response.toString());
+                Log.d("onsuccess getmessages:", messages.toString());
             }
 
 

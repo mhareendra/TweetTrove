@@ -48,7 +48,8 @@
         android:layout_alignStart="@+id/ivProfileImage"
         android:layout_marginTop="1dp"
         android:textStyle="bold"
-        android:textSize="8dp" />
+        android:textSize="8dp"
+        android:textColor="#fcfcfd" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,7 +61,8 @@
         android:layout_alignLeft="@+id/tvUserName"
         android:layout_alignStart="@+id/tvUserName"
         android:layout_marginTop="1dp"
-        android:textSize="8dp" />
+        android:textSize="8dp"
+        android:textColor="#fcfcfd" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -72,7 +74,8 @@
         android:layout_alignLeft="@+id/tvDescription"
         android:layout_alignStart="@+id/tvDescription"
         android:layout_marginTop="4dp"
-        android:textSize="6dp" />
+        android:textSize="6dp"
+        android:textColor="#fcfcfd" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,7 +87,8 @@
         android:layout_toRightOf="@+id/tvFollowingCount"
         android:layout_toEndOf="@+id/tvFollowingCount"
         android:layout_marginLeft="14dp"
-        android:textSize="6dp" />
+        android:textSize="6dp"
+        android:textColor="#fcfcfd" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,5 +103,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="14dp"
-        android:textSize="10dp" />
+        android:textSize="10dp"
+        android:textColor="#fcfcfd" />
 </RelativeLayout>
