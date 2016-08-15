@@ -27,6 +27,12 @@ public class ProfileActivity extends AppCompatActivity implements TweetsAdapter.
 
         String screenName = getIntent().getStringExtra("screenName");
 
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.twitter_launcher);
+        }
+
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 

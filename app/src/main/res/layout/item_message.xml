@@ -36,11 +36,13 @@
         android:text="Small Text"
         android:id="@+id/tvText"
         android:layout_below="@+id/tvUserName"
-        android:layout_alignRight="@+id/tvUserName"
-        android:layout_alignEnd="@+id/tvUserName"
         android:layout_marginTop="4dp"
         android:maxLines="1"
-        android:layout_marginBottom="14dp" />
+        android:layout_marginBottom="14dp"
+        android:layout_alignRight="@+id/tvTime"
+        android:layout_alignEnd="@+id/tvTime"
+        android:layout_toRightOf="@+id/ivMsgProfileImage"
+        android:layout_toEndOf="@+id/ivMsgProfileImage" />
 
     <TextView
         android:layout_width="wrap_content"

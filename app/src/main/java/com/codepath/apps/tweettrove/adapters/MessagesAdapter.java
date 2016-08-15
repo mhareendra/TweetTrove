@@ -68,12 +68,12 @@ public class MessagesAdapter
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvText.setText(message.text);
-        viewHolder.tvUserName.setText(message.senderScreenName);
-
+        viewHolder.tvText.setText(message.getText());
+        viewHolder.tvUserName.setText(message.getSenderScreenName());
+        viewHolder.tvTime.setText(message.getRelativeTimeStamp());
 
         Picasso.with(getContext())
-                .load(message.profileImageUrlHttps)
+                .load(message.getProfileImageUrlHttps())
                 .transform(new RoundedCornersTransformation(10, 10))
                 .into(viewHolder.ivMsgProfileImage);
 

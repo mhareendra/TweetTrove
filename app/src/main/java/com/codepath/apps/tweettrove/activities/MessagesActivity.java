@@ -44,6 +44,12 @@ public class MessagesActivity extends AppCompatActivity {
         adapter = new MessagesAdapter(this, messages );
         lvMessages.setAdapter(adapter);
         getDirectMessages();
+
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.twitter_launcher);
+        }
     }
 
     private void getDirectMessages()
@@ -58,6 +64,7 @@ public class MessagesActivity extends AppCompatActivity {
                 ArrayList<Message> messageList = Message.fromJSonArray(response);
 
                 messages.addAll(messageList);
+                adapter.notifyDataSetChanged();
                 Log.d("onsuccess getmessages:", response.toString());
                 Log.d("onsuccess getmessages:", messages.toString());
             }
@@ -74,6 +81,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         }, 0);
     }
+
 
 
 

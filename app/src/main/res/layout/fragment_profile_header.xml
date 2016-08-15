@@ -35,7 +35,7 @@
         android:layout_above="@+id/ivProfileImage"
         android:src="@color/book_loading_book"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
         android:layout_alignLeft="@+id/tvDescription"
         android:layout_alignStart="@+id/tvDescription"
         android:layout_marginTop="4dp"
-        android:textSize="6dp"
+        android:textSize="8dp"
         android:textColor="#fcfcfd" />
 
     <TextView
@@ -87,7 +87,7 @@
         android:layout_toRightOf="@+id/tvFollowingCount"
         android:layout_toEndOf="@+id/tvFollowingCount"
         android:layout_marginLeft="14dp"
-        android:textSize="6dp"
+        android:textSize="8dp"
         android:textColor="#fcfcfd" />
 
     <TextView

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.apps.tweettrove.R;
 import com.codepath.apps.tweettrove.adapters.FragmentTimelinePagerAdapter;
@@ -17,6 +18,8 @@ import com.codepath.apps.tweettrove.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,7 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
 
         viewPager.setAdapter(new FragmentTimelinePagerAdapter(getSupportFragmentManager(),
                 TimelineActivity.this));
+
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -73,6 +77,12 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
         }
         else if(id == R.id.action_messages)
         {
+
+            if(!isOnline())
+            {
+                Toast.makeText(this, "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+                return super.onOptionsItemSelected(item);
+            }
             Intent intent = new Intent(TimelineActivity.this, MessagesActivity.class);
             startActivity(intent);
         }
@@ -81,6 +91,13 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
 
     private void startProfileActivity(String screenName)
     {
+
+        if(!isOnline())
+        {
+            Toast.makeText(this, "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(TimelineActivity.this,ProfileActivity.class );
         intent.putExtra("screenName", screenName);
         startActivity(intent);
@@ -117,5 +134,16 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
 
         );
 
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
     }
 }
