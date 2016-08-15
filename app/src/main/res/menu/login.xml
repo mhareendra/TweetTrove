@@ -7,7 +7,7 @@
         android:title="profile"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_profile"
-        android:orderInCategory="100"
+        android:orderInCategory="130"
         android:titleCondensed="Profile"
         android:id="@+id/action_profile"
         />
@@ -22,5 +22,5 @@
 
         />
 
-    
+
 </menu>

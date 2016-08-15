@@ -58,12 +58,15 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
         client = TwitterApplication.getRestClient();
     }
 
+
+    private String query;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.login, menu);
 
         return true;
     }
+
 
 
     @Override
@@ -88,6 +91,7 @@ implements TweetsAdapter.ProfileImageClickListener, ComposeTweetFragment.Compose
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void startProfileActivity(String screenName)
     {

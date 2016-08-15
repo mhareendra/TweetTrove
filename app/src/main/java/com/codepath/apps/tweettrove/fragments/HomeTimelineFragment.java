@@ -50,7 +50,9 @@ public class HomeTimelineFragment extends TimelineFragment {
             isDeviceOnline = false;
             Toast.makeText(getActivity(), "Could not connect to the Internet, displaying offline tweets", Toast.LENGTH_SHORT).show();
             displayDBData();
-            swipeContainer.setRefreshing(false);
+            if(swipeContainer != null) {
+                swipeContainer.setRefreshing(false);
+            }
             return;
         }
         else
