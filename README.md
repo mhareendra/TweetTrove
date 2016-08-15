@@ -80,6 +80,10 @@ Here's a walkthrough of implemented user stories:
 
 Assignment 4:
 
+gif:
+
+
+<img src='https://github.com/mhareendra/TweetTrove/blob/master/TT3.gif' width=' '/>
 
 
 
