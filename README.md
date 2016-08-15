@@ -82,11 +82,12 @@ Assignment 4:
 
 gif:
 
-
 <img src='https://github.com/mhareendra/TweetTrove/blob/master/TT3.gif' width=' '/>
 
+gif with additional feature:
+Reply, retweet and favorite from tweet detail screen
 
-
+<img src='https://github.com/mhareendra/TweetTrove/blob/master/TT4.gif' width=' '/>
 
 Assignment 3:
 
